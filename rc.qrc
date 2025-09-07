@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/icon-2141481_1920.png</file>
+        <file>resource/OIP.png</file>
+        <file>style/stylesheet.qss</file>
+    </qresource>
+</RCC>
