@@ -21,7 +21,7 @@ public:
 
 public slots:
     void RegisterShow();
-
+    void RegisterClose();
 private:
     Ui::MainWindow *ui;
     login_Dialog* _login;
