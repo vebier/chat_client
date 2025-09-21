@@ -28,6 +28,7 @@ void MainWindow::RegisterShow()
 
 void MainWindow::RegisterClose()
 {
+
     //_register->hide();
     _login->show();
 }

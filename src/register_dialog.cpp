@@ -13,7 +13,7 @@ register_Dialog::register_Dialog(QWidget *parent)
     ui->confirm_edit->setEchoMode(QLineEdit::Password);
     ui->err_tip->setProperty("state","normal");
     repolish(ui->err_tip);
-
+    InitHttpHandlers();
     connect(HttpMgr::GetInstance().get(),&HttpMgr::sig_reg_mod_finish,this,&register_Dialog::slot_reg_mod_finish);
 }
 
@@ -28,13 +28,16 @@ void register_Dialog::on_get_code_clicked()
     QRegularExpression regex(R"((\w+)(\.|_)?(\w*)@(\w+)(\.(\w+))+)");
     if(regex.match(email).hasMatch()){
         //发送http请求获取验证码
+        QJsonObject json_obj;
+        json_obj["email"] = email;
+        HttpMgr::GetInstance()->PostHttpReq(QUrl(gate_url_prefix+"/get_varifycode"),json_obj,ReqId::ID_GET_VARIFY_CODE,Modules::REGISTERMOD);
         showTip(tr("验证码已发送，请查收"),true);
     }else{
         showTip(tr("邮箱地址不正确"),false);
     }
 }
 
-void register_Dialog::slot_reg_mod_finish(ReqId id, QByteArray res, ErrorCodes code)
+void register_Dialog::slot_reg_mod_finish(ReqId id, QString res, ErrorCodes code)
 {
     if(code!=ErrorCodes::SUCCESS){
         showTip(tr("网络错误"),false);
@@ -42,7 +45,7 @@ void register_Dialog::slot_reg_mod_finish(ReqId id, QByteArray res, ErrorCodes c
         return;
     }
 
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(res);
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(res.toUtf8());
     if(jsonDoc.isNull()){
         showTip(tr("JSON错误"),false);
         qDebug()<<"反序列化QJsonDocument失败";
@@ -69,9 +72,13 @@ void register_Dialog::InitHttpHandlers()
             qDebug()<<"获取验证码不成功";
             return;
         }
-        auto verifyCode=JsonObject["verifyCode"].toString();
+        auto email=JsonObject["email"].toString();
         showTip(tr("验证码已发送，请查收"),true);
-        qDebug()<<"验证码 ： "<<verifyCode;
+        qDebug()<<"邮箱 ： "<<email;
+
+        // auto verifyCode=JsonObject["verifyCode"].toString();
+        // showTip(tr("验证码已发送，请查收"),true);
+        // qDebug()<<"验证码 ： "<<verifyCode;
         return;
     };
 }

@@ -20,7 +20,7 @@ signals:
 
 private slots:
     void on_get_code_clicked();
-    void slot_reg_mod_finish(ReqId,QByteArray,ErrorCodes);
+    void slot_reg_mod_finish(ReqId,QString,ErrorCodes);
     void on_cancel_btn_clicked();
 
 private:

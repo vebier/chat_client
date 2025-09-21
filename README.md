@@ -19,7 +19,7 @@
 
 - **框架**: [Qt 6.9.0](https://www.qt.io/)
 - **编译器**: MSVC 2022 (Microsoft Visual C++)
-- **语言**: C++14
+- **语言**: C++17
 - **构建系统**: qmake 
 - **操作系统**: 主要开发环境为 Windows
 

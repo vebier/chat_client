@@ -6,8 +6,13 @@
 #include <memory>
 #include <mutex>
 #include <QDebug>
+#include <QDir>
+#include <QSettings>
+#include <QFile>
 
 extern std::function<void(QWidget*)> repolish;
+
+extern QString gate_url_prefix;
 
 enum class ReqId{
     ID_GET_VARIFY_CODE = 1001,  //获取验证码

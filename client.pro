@@ -40,4 +40,33 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     rc.qrc
 
-DISTFILES +=
+DISTFILES += \
+    config.ini
+
+win32 {
+    # 源文件
+    INI_SOURCE = $$PWD/config.ini
+    INI_SOURCE_WIN = $$replace(INI_SOURCE, /, \\)
+
+    # 根据构建模式选择目标目录
+    CONFIG(debug, debug|release) {
+        TARGET_DIR = $$OUT_PWD/debug
+    } else {
+        TARGET_DIR = $$OUT_PWD/release
+    }
+
+    TARGET_DIR_WIN = $$replace(TARGET_DIR, /, \\)
+
+    # 构造复制命令
+    COPY_CMD = copy /Y \"$$INI_SOURCE_WIN\" \"$$TARGET_DIR_WIN\\\"
+
+    # 添加到构建后步骤
+    QMAKE_POST_LINK += $$COPY_CMD
+
+    # 调试信息
+    message("👉 自动复制配置文件:")
+    message("   源文件: $$INI_SOURCE_WIN")
+    message("   目标目录: $$TARGET_DIR_WIN")
+    message("   执行命令: $$COPY_CMD")
+}
+
