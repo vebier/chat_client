@@ -23,11 +23,14 @@ private slots:
     void slot_reg_mod_finish(ReqId,QString,ErrorCodes);
     void on_cancel_btn_clicked();
 
+    void on_confirm_btn_clicked();
+
 private:
     void InitHttpHandlers();
+    PasswordResult validatePassword(const std::string& password);
     void showTip(QString str,bool flag);
     Ui::register_Dialog *ui;
-    QMap<ReqId,std::function<void(const QJsonObject&&)>> _handlers;
+    QMap<ReqId,std::function<void(QJsonObject)>> _handlers;
 };
 
 #endif // REGISTER_DIALOG_H
